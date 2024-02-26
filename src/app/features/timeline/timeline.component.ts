@@ -1,0 +1,31 @@
+import { Component, OnInit } from '@angular/core';
+import { Post } from '../../shared/models/post';
+import { PostComponent } from '../../shared/components/posts/post/post.component';
+import { PostService } from '../../core/services/post.service';
+
+@Component({
+  selector: 'app-timeline',
+  standalone: true,
+  imports: [PostComponent],
+  templateUrl: './timeline.component.html',
+  styleUrl: './timeline.component.scss'
+})
+
+export class TimelineComponent implements OnInit{
+  posts: Post[] = [
+
+  ]
+
+  constructor(private pService:PostService) { }
+
+  ngOnInit(): void {
+      this.pService.getTimelinePosts().subscribe({
+        next: (posts: Post[]) => {
+          this.posts = posts;
+        },
+        error: (error) => {
+          console.error('Error fetching posts', error)
+        }
+      })
+  }
+}
